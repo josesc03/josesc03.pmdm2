@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ConvertV2JosacaTheme {
-                Scaffold( modifier = Modifier.fillMaxSize() ) { innerPadding ->
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Go(
                         modifier = Modifier.padding(innerPadding)
                     )
@@ -88,12 +88,14 @@ fun Go(modifier: Modifier = Modifier) {
 
     var conversion by rememberSaveable { mutableStateOf("") }
 
-    Column (modifier = modifier
-        .fillMaxSize()
-        .background(Color(10, 10, 10))
-        .padding(10.dp),
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color(10, 10, 10))
+            .padding(10.dp),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally) {
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Foto()
@@ -109,47 +111,65 @@ fun Go(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(vertical = 20.dp)
         )
 
-        Text("Introduce un número entero",
+        Text(
+            "Introduce un número entero",
             fontSize = 24.sp,
-            color = Color.White)
+            color = Color.White
+        )
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        InputNumero(numeroValor, onNumeroValorChange = {if (it.matches(Regex("\\d*"))) numeroValor = it})
+        InputNumero(
+            numeroValor,
+            onNumeroValorChange = { if (it.matches(Regex("\\d*"))) numeroValor = it })
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Row (verticalAlignment = Alignment.CenterVertically,
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxWidth()) {
+            modifier = Modifier.fillMaxWidth()
+        ) {
             ADecimal(decimalBinario)
             decimalBinario = switchDecimalBinario(decimalBinario)
             ABinario(decimalBinario)
         }
 
-        Row (modifier = Modifier.fillMaxWidth().padding(vertical = 20.dp, horizontal = 10.dp)) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 20.dp, horizontal = 10.dp)) {
             Text("Conversión: ", color = Color.White, textAlign = TextAlign.Left)
             Text(conversion, color = Color(if (decimalBinarioChanged) 0xFF6cb1d8 else 0xFF6fd86c))
         }
 
-        Row (modifier = Modifier.fillMaxWidth(.8f),horizontalArrangement = Arrangement.SpaceEvenly) {
-            Button(onClick = {
-                if (numeroValor != "") {
-                    if (numeroValor.matches(Regex("[0,1]+"))) {
-                        conversion = if (decimalBinario) numeroValor.toInt().toString(2) else numeroValor.toInt(2).toString()
-                        decimalBinarioChanged = decimalBinario
-                    } else {
-                        conversion = if (decimalBinario) numeroValor.toInt().toString(2) else ""
-                        decimalBinarioChanged = decimalBinario
+        Row(
+            modifier = Modifier.fillMaxWidth(.8f),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Button(
+                onClick = {
+                    if (numeroValor != "") {
+                        if (numeroValor.matches(Regex("[0,1]+"))) {
+                            conversion = if (decimalBinario) numeroValor.toInt()
+                                .toString(2) else numeroValor.toInt(2).toString()
+                            decimalBinarioChanged = decimalBinario
+                        } else {
+                            conversion = if (decimalBinario) numeroValor.toInt().toString(2) else ""
+                            decimalBinarioChanged = decimalBinario
+                        }
                     }
-                }
-            },
+                },
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
                     contentColor = Color.White,
-                    containerColor = Color(48,48,48)
-                )) {
-                Icon(painter = painterResource(id = R.drawable.baseline_autorenew_24), tint = Color.White, contentDescription = null)
+                    containerColor = Color(48, 48, 48)
+                )
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_autorenew_24),
+                    tint = Color.White,
+                    contentDescription = null
+                )
                 Spacer(modifier = Modifier.width(10.dp))
                 Text("Convertir")
             }
@@ -157,29 +177,38 @@ fun Go(modifier: Modifier = Modifier) {
             AnimatedVisibility(
                 visible = numeroValor.isNotEmpty(),
                 enter = slideInHorizontally(
-                    initialOffsetX = {-it},
-                    animationSpec = tween(500)) + fadeIn(animationSpec = tween(500)
+                    initialOffsetX = { -it },
+                    animationSpec = tween(500)
+                ) + fadeIn(
+                    animationSpec = tween(500)
                 ),
                 exit = slideOutHorizontally(
-                    targetOffsetX = {-it},
-                    animationSpec = tween(500)) + fadeOut( animationSpec = tween(500)
+                    targetOffsetX = { -it },
+                    animationSpec = tween(500)
+                ) + fadeOut(
+                    animationSpec = tween(500)
                 )
             ) {
-                Button(onClick = {
-                    numeroValor = ""
-                    conversion = ""
-                },
+                Button(
+                    onClick = {
+                        numeroValor = ""
+                        conversion = ""
+                    },
                     colors = ButtonDefaults.buttonColors(
                         contentColor = Color.White,
                         disabledContentColor = Color(0xFFBBBBBB),
 
-                        containerColor = Color(0xFFc81a1a) ,
+                        containerColor = Color(0xFFc81a1a),
                         disabledContainerColor = Color(0xFFa24444)
                     ),
                     enabled = numeroValor.isNotEmpty(),
                     shape = RoundedCornerShape(10.dp)
                 ) {
-                    Icon(imageVector = Icons.Default.Delete, tint = if (numeroValor.isNotEmpty()) Color.White else Color(0xFFBBBBBB), contentDescription = null)
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        tint = if (numeroValor.isNotEmpty()) Color.White else Color(0xFFBBBBBB),
+                        contentDescription = null
+                    )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text("Reset")
                 }
@@ -270,10 +299,10 @@ fun InputNumero(numeroValor: String, onNumeroValorChange: (String) -> Unit) {
         colors = TextFieldDefaults.colors(
             unfocusedContainerColor = Color(0xFF3c3c3c),
             focusedContainerColor = Color(0xFF373737),
-            disabledContainerColor = Color(30,30,30),
-            unfocusedLabelColor = Color(150,150,150),
-            focusedLabelColor = Color(200,200,200),
-            disabledLabelColor = Color(50,50,50),
+            disabledContainerColor = Color(30, 30, 30),
+            unfocusedLabelColor = Color(150, 150, 150),
+            focusedLabelColor = Color(200, 200, 200),
+            disabledLabelColor = Color(50, 50, 50),
             focusedIndicatorColor = Color.White,
             focusedTextColor = Color.White
         ),
@@ -282,7 +311,8 @@ fun InputNumero(numeroValor: String, onNumeroValorChange: (String) -> Unit) {
 
 @Composable
 fun Foto() {
-    Image(painter = painterResource(id = R.drawable.profile),
+    Image(
+        painter = painterResource(id = R.drawable.profile),
         contentDescription = "Foto de perfil",
         modifier = Modifier
             .border(color = Color(0xFF303030), width = 5.dp, shape = CircleShape)
@@ -293,10 +323,12 @@ fun Foto() {
 
 @Composable
 fun Nombre(nombre: String) {
-    Text(nombre,
+    Text(
+        nombre,
         fontWeight = FontWeight.Bold,
         fontSize = 48.sp,
-        color = Color.White)
+        color = Color.White
+    )
 }
 
 @Preview(showBackground = true, showSystemUi = true)
